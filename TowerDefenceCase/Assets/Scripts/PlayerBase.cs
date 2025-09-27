@@ -27,5 +27,8 @@ public class PlayerBase : MonoBehaviour{
         HealthbarFill.fillAmount = health / 100f;
         PlayerInIFrame = true;
         IFramePlayer?.Invoke(1);
+
+        if (health <= 0f)
+            Application.LoadLevel(0);
     }
 }
