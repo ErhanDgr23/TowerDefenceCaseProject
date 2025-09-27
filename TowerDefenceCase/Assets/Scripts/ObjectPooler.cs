@@ -11,12 +11,16 @@ public class PoolItem
 
 public class ObjectPooler : MonoBehaviour
 {
+    public static ObjectPooler Instance;
+
     public List<PoolItem> itemsToPool = new List<PoolItem>();
     private Dictionary<GameObject, Queue<GameObject>> poolDictionary;
     private Dictionary<GameObject, GameObject> objectToPrefabMap;
 
     void Awake()
     {
+        Instance = this;
+
         poolDictionary = new Dictionary<GameObject, Queue<GameObject>>();
         objectToPrefabMap = new Dictionary<GameObject, GameObject>();
 

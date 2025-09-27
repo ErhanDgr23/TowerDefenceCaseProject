@@ -28,7 +28,7 @@ public class EnemySensor : MonoBehaviour
         }
     }
 
-    public void ZombieDead(GameObject enemyObj) => enemys.Remove(enemyObj);
+    public void ZombieDead(GameObject enemyObj, bool spawnedFromboss) => enemys.Remove(enemyObj);
 
     public void FireEvent() => EnemyReach?.Invoke(enemys);
 }

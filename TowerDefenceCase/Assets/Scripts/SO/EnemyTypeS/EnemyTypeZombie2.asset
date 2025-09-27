@@ -10,18 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 95a86559b0a7019488c776c121f46a6d, type: 3}
-  m_Name: EnemyType1
+  m_Name: EnemyTypeZombie2
   m_EditorClassIdentifier: 
-  EnemySprite: {fileID: -493647738, guid: 3bcb7877229a5334da528f2f0872b5c3, type: 3}
+  EnemySprite: {fileID: 613658156, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
   RunAnimationSprites:
   - name: Run
     frames:
-    - {fileID: -493647738, guid: 3bcb7877229a5334da528f2f0872b5c3, type: 3}
-    - {fileID: 1354593876, guid: 3bcb7877229a5334da528f2f0872b5c3, type: 3}
-    - {fileID: 2018998915, guid: 3bcb7877229a5334da528f2f0872b5c3, type: 3}
-    - {fileID: 66914582, guid: 3bcb7877229a5334da528f2f0872b5c3, type: 3}
-    - {fileID: 1243161592, guid: 3bcb7877229a5334da528f2f0872b5c3, type: 3}
-    - {fileID: -1524729577, guid: 3bcb7877229a5334da528f2f0872b5c3, type: 3}
+    - {fileID: 613658156, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
+    - {fileID: -140220566, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
+    - {fileID: 1611109861, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
+    - {fileID: 1488126946, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
     frameTime: 0.1
     loop: 1
     onAnimationEnd:
@@ -29,7 +27,7 @@ MonoBehaviour:
         m_Calls: []
   - name: Idle
     frames:
-    - {fileID: 1243161592, guid: 3bcb7877229a5334da528f2f0872b5c3, type: 3}
+    - {fileID: 1488126946, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
     frameTime: 0.5
     loop: 0
     onAnimationEnd:
@@ -37,7 +35,7 @@ MonoBehaviour:
         m_Calls: []
   - name: Dead
     frames:
-    - {fileID: -2007313318, guid: 3bcb7877229a5334da528f2f0872b5c3, type: 3}
+    - {fileID: 1261089785, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
     frameTime: 0.5
     loop: 0
     onAnimationEnd:
@@ -45,12 +43,12 @@ MonoBehaviour:
         m_Calls: []
   - name: Hit
     frames:
-    - {fileID: 194153472, guid: 3bcb7877229a5334da528f2f0872b5c3, type: 3}
+    - {fileID: -392852972, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
     frameTime: 0.2
     loop: 0
     onAnimationEnd:
       m_PersistentCalls:
         m_Calls: []
-  Health: 100
-  Speed: 2
-  Damage: 5
+  Health: 200
+  Speed: 1.75
+  Damage: 15

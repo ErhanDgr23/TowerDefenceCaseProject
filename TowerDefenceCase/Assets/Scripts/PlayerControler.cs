@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class PlayerControler : MonoBehaviour {
@@ -8,13 +8,19 @@ public class PlayerControler : MonoBehaviour {
     [SerializeField] float MoveSpeed;
 
     float HorizontalAxis, VerticalAxis;
+    SpriteRenderer _spriteRenderer;
     GunController _gunController;
     CustomAnimator _animator;
+    PlayerBase _playerBase;
 
     private void Start()
     {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         _gunController = GetComponent<GunController>();
         _animator = GetComponent<CustomAnimator>();
+        _playerBase = PlayerBase.instance;
+
+        _playerBase.IFramePlayer += TakeDamage;
     }
 
     void Update()
@@ -25,6 +31,20 @@ public class PlayerControler : MonoBehaviour {
         Move();
     }
 
+    void TakeDamage(int value)
+    {
+        _spriteRenderer.color = Color.green;
+        StopCoroutine(WaitIFrameAndLeave());
+        StartCoroutine(WaitIFrameAndLeave());
+    }
+
+    IEnumerator WaitIFrameAndLeave()
+    {
+        yield return new WaitForSeconds(1f);
+        _spriteRenderer.color = Color.white;
+        _playerBase.PlayerInIFrame = false;
+    }
+
     public void Move()
     {
         HorizontalAxis = Input.GetAxis("Horizontal");
@@ -33,8 +53,8 @@ public class PlayerControler : MonoBehaviour {
         transform.position += new Vector3(-VerticalAxis, 0f, HorizontalAxis) * MoveSpeed * Time.deltaTime;
 
         Vector3 pos = transform.position;
-        pos.z = Mathf.Clamp(pos.z, -13.5f, 13.5f);
-        pos.x = Mathf.Clamp(pos.x, -6.5f, 11f);
+        pos.z = Mathf.Clamp(pos.z, -17f, 22f);
+        pos.x = Mathf.Clamp(pos.x, -10f, 14f);
         transform.position = pos;
 
         if (VerticalAxis != 0f || HorizontalAxis != 0f)

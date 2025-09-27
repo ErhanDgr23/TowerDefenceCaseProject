@@ -1,3 +1,5 @@
+﻿using Random = UnityEngine.Random;
+using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
 using System;
@@ -9,9 +11,9 @@ public interface IEnemy
 
 public class EnemyManager : MonoBehaviour, IEnemy {
 
-    public event Action<GameObject> OnDead;
+    public event Action<GameObject, bool> OnDead;
     public EnemyTypeSO Type;
-    public bool IsDead;
+    public bool IsDead, SpawnedFromBoss = false;
 
     [SerializeField] Image HealthBarSlider;
 
@@ -19,10 +21,13 @@ public class EnemyManager : MonoBehaviour, IEnemy {
     CustomAnimator _enemyAnim;
     EnemyMove _enemyMove;
     PathGizmo _pathGizmo;
+    ObjectPooler _pooler;
 
     CustomAnimator _bleedAnim;
     int _enemyMoveIndex = -1;
-    int Health;
+    int health, maxHealth;
+
+    private Coroutine bossCoroutine;
 
     UnityEngine.Events.UnityAction _runEndHandler;
 
@@ -38,10 +43,13 @@ public class EnemyManager : MonoBehaviour, IEnemy {
 
     public void InitEnemy()
     {
+        _enemyAnim.enabled = true;
         transform.tag = "Enemy";
         IsDead = false;
-        Health = (int)Type.Health;
-        HealthBarSlider.fillAmount = Health / 100f;
+        health = (int)Type.Health;
+        maxHealth = (int)Type.Health;
+        HealthBarSlider.fillAmount = (float)health / (float)maxHealth;
+        HealthBarSlider.transform.parent.gameObject.SetActive(true);
 
         transform.rotation = Quaternion.Euler(45f, -90f, 0f);
         transform.localScale = new Vector3(2f, 2f, 2f);
@@ -59,6 +67,39 @@ public class EnemyManager : MonoBehaviour, IEnemy {
 
         _runEndHandler = OnRunAnimationEnd;
         _enemyAnim.animations[3].onAnimationEnd.AddListener(_runEndHandler);
+
+        if (Type is EnemyTypeSpawnerBossSO bossType && bossType.IsBoss)
+        {
+            if (bossCoroutine != null) StopCoroutine(bossCoroutine);
+            bossCoroutine = StartCoroutine(BossSpawnRoutine(bossType));
+        }
+    }
+
+    private IEnumerator BossSpawnRoutine(EnemyTypeSpawnerBossSO bossType)
+    {
+        while (!IsDead)
+        {
+            yield return new WaitForSeconds(bossType.SpawnInterval);
+
+            for (int i = 0; i < bossType.SpawnCount; i++)
+            {
+                Vector3 offset = new Vector3(
+                    Random.Range(-1f, 1f),
+                    0f,
+                    Random.Range(-1f, 1f)
+                );
+
+                GameObject minion = _pooler.SpawnFromPool(bossType.MinionPrefab, transform.position + offset, Quaternion.identity);
+                EnemyManager minionManager = minion.GetComponent<EnemyManager>();
+                minionManager.SpawnedFromBoss = true;
+                minionManager._enemyMove.TakeThisPath(_enemyMove._currentPathIndex, _enemyMove._pathPoints);
+                minionManager.Type = bossType.MinionType;
+                if (minionManager != null)
+                {
+                    minionManager.InitEnemy();
+                }
+            }
+        }
     }
 
     private void OnRunAnimationEnd()
@@ -69,29 +110,20 @@ public class EnemyManager : MonoBehaviour, IEnemy {
 
     void Start()
     {
+        _pooler = ObjectPooler.Instance;
         _pathGizmo = PathGizmo.Instance;
 
-        if (_enemyMove.Targettr == null)
-            ChangeEnemyTarget();
+        if (_pathGizmo != null && !SpawnedFromBoss)
+            _enemyMove.SetPath(_pathGizmo.pathPoints.ToArray());
 
-        _enemyMove.ReachTheEnd += ChangeEnemyTarget;
-    }
-
-    void ChangeEnemyTarget()
-    {
-        if (IsDead) return;
-
-        _enemyMoveIndex++;
-
-        if (_pathGizmo.pathPoints.Count > _enemyMoveIndex)
-            _enemyMove.Targettr = _pathGizmo.pathPoints[_enemyMoveIndex];
-        else
-            EnemyHitPlayerBase();
+        _enemyMove.PathComplete += EnemyHitPlayerBase;
     }
 
     void EnemyHitPlayerBase()
     {
-
+        PlayerBase.instance.OnDamage?.Invoke(Type.Damage);
+        health = 0;
+        CheckHealth();
     }
 
     public void Damage(int val)
@@ -101,8 +133,8 @@ public class EnemyManager : MonoBehaviour, IEnemy {
         _bleedAnim.StopAndPlay("Bleed");
         _enemyAnim.StopAndPlay("Hit");
         _enemyMove.Stop = true;
-        Health -= val;
-        HealthBarSlider.fillAmount = Health / 100f;
+        health -= val;
+        HealthBarSlider.fillAmount = (float)health / (float)maxHealth;
         CheckHealth();
     }
 
@@ -110,17 +142,23 @@ public class EnemyManager : MonoBehaviour, IEnemy {
     {
         if (IsDead) return;
 
-        if (Health <= 0f)
+        if (health <= 0f)
         {
             if (_runEndHandler != null)
                 _enemyAnim.animations[3].onAnimationEnd.RemoveListener(_runEndHandler);
 
+            if (bossCoroutine != null) StopCoroutine(bossCoroutine);
+
+            HealthBarSlider.transform.parent.gameObject.SetActive(false);
             _enemyMove.Stop = true;
             IsDead = true;
             _enemyAnim.StopAndPlay("Dead");
             transform.tag = "Untagged";
             _enemyAnim.enabled = false;
-            OnDead?.Invoke(this.gameObject);
+            OnDead?.Invoke(this.gameObject, SpawnedFromBoss);
+
+            if (SpawnedFromBoss)
+                _pooler.ReturnToPool(this.gameObject, 1f);
         }
     }
 

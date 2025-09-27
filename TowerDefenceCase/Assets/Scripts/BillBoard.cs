@@ -1,10 +1,21 @@
 using UnityEngine;
 
-public class Billboard : MonoBehaviour
-{
+public class Billboard : MonoBehaviour {
+
+    [SerializeField] bool OneTime;
+
     private Camera _cam;
 
-    void Start() => _cam = Camera.main;
+    void Start()
+    {
+        _cam = Camera.main;
+
+        if(OneTime)
+        {
+            transform.forward = _cam.transform.forward;
+            this.enabled = false;
+        }
+    }
 
     void LateUpdate()
     {

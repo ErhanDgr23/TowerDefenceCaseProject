@@ -13,7 +13,14 @@ MonoBehaviour:
   m_Name: Wave1
   m_EditorClassIdentifier: 
   enemies:
-  - enemyType: {fileID: 11400000, guid: 588d9cb62e8bffe4889230f76eb32c35, type: 2}
+  - enemyType: {fileID: 11400000, guid: d3d5a81f1c4d3954993c1f6c860e69e1, type: 2}
     count: 4
+  - enemyType: {fileID: 11400000, guid: 588d9cb62e8bffe4889230f76eb32c35, type: 2}
+    count: 6
+  - enemyType: {fileID: 11400000, guid: 0c34a5e2a1a0b0240a2197a627ee62c4, type: 2}
+    count: 4
+  - enemyType: {fileID: 11400000, guid: f6c5a98826415374796e3cdefa91d8ee, type: 2}
+    count: 2
+  waveCooldown: 20
   waveTimeMax: 0.2
   waveTimeMin: 0.8

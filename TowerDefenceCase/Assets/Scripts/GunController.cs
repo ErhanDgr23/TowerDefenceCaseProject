@@ -54,7 +54,7 @@ public class GunController : MonoBehaviour {
     private void LateUpdate()
     {
         if(_enemyTarget == null)
-            GunPivot.localEulerAngles = new Vector3(GunPivot.localEulerAngles.x, _animator.flipX == false ? 0f : 180f, 0f);
+            GunPivot.eulerAngles = new Vector3(GunPivot.localEulerAngles.x, _animator.flipX == false ? 0f : 180f, 0f);
     }
 
     public void LookEnemy()
