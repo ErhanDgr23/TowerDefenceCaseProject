@@ -5,6 +5,7 @@ public class PlayerControler : MonoBehaviour {
 
     public bool Dead;
 
+    [SerializeField] GameObject PlayerShadow;
     [SerializeField] float MoveSpeed;
 
     float HorizontalAxis, VerticalAxis;
@@ -47,6 +48,9 @@ public class PlayerControler : MonoBehaviour {
 
     public void Move()
     {
+        if(PlayerShadow != null)
+        PlayerShadow.transform.position = transform.position + new Vector3(-0.45f, -0.83f, 0f);
+
         HorizontalAxis = Input.GetAxis("Horizontal");
         VerticalAxis = Input.GetAxis("Vertical");
 
@@ -54,7 +58,7 @@ public class PlayerControler : MonoBehaviour {
 
         Vector3 pos = transform.position;
         pos.z = Mathf.Clamp(pos.z, -17f, 22f);
-        pos.x = Mathf.Clamp(pos.x, -10f, 14f);
+        pos.x = Mathf.Clamp(pos.x, -5f, 8.5f);
         transform.position = pos;
 
         if (VerticalAxis != 0f || HorizontalAxis != 0f)

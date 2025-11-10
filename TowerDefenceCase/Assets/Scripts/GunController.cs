@@ -20,6 +20,7 @@ public class GunController : MonoBehaviour {
     {
         _GunSprite = GunPivot.GetChild(0).GetComponent<SpriteRenderer>();
         _animator = GetComponent<CustomAnimator>();
+        GunPivot.GetChild(0).gameObject.SetActive(false);
 
         Sensor.EnemyReach += CalculateClosestEnemyTarget;
     }
@@ -61,6 +62,7 @@ public class GunController : MonoBehaviour {
     {
         if (_enemyTarget == null || CurrentGun == null) return;
 
+        GunPivot.GetChild(0).gameObject.SetActive(_enemyTarget);
         EnemyManager enemyManger = _enemyTarget.GetComponent<EnemyManager>();
 
         if (enemyManger.IsDead)
