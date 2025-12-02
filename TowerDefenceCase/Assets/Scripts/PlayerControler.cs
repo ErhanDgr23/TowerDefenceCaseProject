@@ -6,18 +6,21 @@ public class PlayerControler : MonoBehaviour {
     public bool Dead;
 
     [SerializeField] GameObject PlayerShadow;
+    [SerializeField] FixedJoystick Joystick;
     [SerializeField] float MoveSpeed;
 
     float HorizontalAxis, VerticalAxis;
     SpriteRenderer _spriteRenderer;
     GunController _gunController;
     CustomAnimator _animator;
+    PlayerStats _playerStats;
     PlayerBase _playerBase;
 
     private void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _gunController = GetComponent<GunController>();
+        _playerStats = GetComponent<PlayerStats>();
         _animator = GetComponent<CustomAnimator>();
         _playerBase = PlayerBase.instance;
 
@@ -51,8 +54,16 @@ public class PlayerControler : MonoBehaviour {
         if(PlayerShadow != null)
         PlayerShadow.transform.position = transform.position + new Vector3(-0.45f, -0.83f, 0f);
 
-        HorizontalAxis = Input.GetAxis("Horizontal");
-        VerticalAxis = Input.GetAxis("Vertical");
+        if(Joystick == null)
+        {
+            HorizontalAxis = Input.GetAxis("Horizontal");
+            VerticalAxis = Input.GetAxis("Vertical");
+        }
+        else
+        {
+            HorizontalAxis = Joystick.Horizontal;
+            VerticalAxis = Joystick.Vertical;
+        }
 
         transform.position += new Vector3(-VerticalAxis, 0f, HorizontalAxis) * MoveSpeed * Time.deltaTime;
 

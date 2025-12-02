@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public interface IEnemy
 {
@@ -24,7 +25,6 @@ public class EnemyManager : MonoBehaviour, IEnemy {
     ObjectPooler _pooler;
 
     CustomAnimator _bleedAnim;
-    int _enemyMoveIndex = -1;
     int health, maxHealth;
 
     private Coroutine bossCoroutine;
@@ -37,6 +37,8 @@ public class EnemyManager : MonoBehaviour, IEnemy {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _enemyAnim = GetComponent<CustomAnimator>();
         _enemyMove = GetComponent<EnemyMove>();
+
+        transform.AddComponent<EnemyXPDropper>();
 
         InitEnemy();
     }
@@ -66,7 +68,7 @@ public class EnemyManager : MonoBehaviour, IEnemy {
             _enemyAnim.animations[3].onAnimationEnd.RemoveListener(_runEndHandler);
 
         _runEndHandler = OnRunAnimationEnd;
-        _enemyAnim.animations[3].onAnimationEnd.AddListener(_runEndHandler);
+        _enemyAnim.animations[3].onAnimationEnd.AddListener(this.OnRunAnimationEnd);
 
         if (Type is EnemyTypeSpawnerBossSO bossType && bossType.IsBoss)
         {
@@ -144,6 +146,9 @@ public class EnemyManager : MonoBehaviour, IEnemy {
 
         if (health <= 0f)
         {
+            _enemyAnim.StopAndPlay("Dead");
+            _enemyAnim.canPlayAnimation = false;
+
             if (_runEndHandler != null)
                 _enemyAnim.animations[3].onAnimationEnd.RemoveListener(_runEndHandler);
 
@@ -152,18 +157,12 @@ public class EnemyManager : MonoBehaviour, IEnemy {
             HealthBarSlider.transform.parent.gameObject.SetActive(false);
             _enemyMove.Stop = true;
             IsDead = true;
-            _enemyAnim.StopAndPlay("Dead");
             transform.tag = "Untagged";
-            _enemyAnim.enabled = false;
+            //_enemyAnim.enabled = false;
             OnDead?.Invoke(this.gameObject, SpawnedFromBoss);
 
             if (SpawnedFromBoss)
                 _pooler.ReturnToPool(this.gameObject, 1f);
         }
-    }
-
-    void Update()
-    {
-        
     }
 }

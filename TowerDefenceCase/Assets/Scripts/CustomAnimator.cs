@@ -23,6 +23,7 @@ public class CustomAnimator : MonoBehaviour
     private SpriteAnimation _currentAnimation;
     private SpriteRenderer _spriteRenderer;
     private Coroutine _animCoroutine;
+    public bool canPlayAnimation = true;
 
     private void Awake() => _spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -40,7 +41,7 @@ public class CustomAnimator : MonoBehaviour
 
     public void Play(string animName)
     {
-        if (!gameObject.activeSelf) return;
+        if (!gameObject.activeSelf || !canPlayAnimation) return;
 
         CurrentPlayingAnimation = animName;
 
@@ -62,7 +63,7 @@ public class CustomAnimator : MonoBehaviour
 
     public void StopAndPlay(string animName)
     {
-        if (!gameObject.activeSelf) return;
+        if (!gameObject.activeSelf || !canPlayAnimation) return;
 
         if (_animCoroutine != null)
         {

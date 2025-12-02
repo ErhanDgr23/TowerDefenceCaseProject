@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: EnemyTypeSpawnerBoss
   m_EditorClassIdentifier: 
   EnemySprite: {fileID: 172626504, guid: c4d2ccab0c2ad7e47853b6e31a7ac7c2, type: 3}
+  XpPrefab: {fileID: 7214384289727672897, guid: 4292e2071e477b6449eea21719132ecb, type: 3}
   RunAnimationSprites:
   - name: Run
     frames:
@@ -50,6 +51,7 @@ MonoBehaviour:
   Health: 1000
   Speed: 1
   Damage: 50
+  Xp: 50
   IsBoss: 1
   MinionPrefab: {fileID: 4846630926734466715, guid: b530bc048b1d8684f9242e9b5f220c2b, type: 3}
   MinionType: {fileID: 11400000, guid: f6c5a98826415374796e3cdefa91d8ee, type: 2}

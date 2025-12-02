@@ -47,8 +47,8 @@ SpriteRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4846630926734466715}
   m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -59,7 +59,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fd875eafa07762942b1a5a81e9a59c8c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -107,6 +107,7 @@ MonoBehaviour:
   CurrentPlayingAnimation: 
   flipX: 0
   StartWithIdle: 1
+  canPlayAnimation: 1
 --- !u!114 &8366091208515317794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,6 +123,8 @@ MonoBehaviour:
   Stop: 0
   Targettr: {fileID: 0}
   MoveSpeed: 0
+  _currentPathIndex: 0
+  _pathPoints: []
 --- !u!114 &5450820355659268914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,6 +139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: {fileID: 11400000, guid: 588d9cb62e8bffe4889230f76eb32c35, type: 2}
   IsDead: 0
+  SpawnedFromBoss: 0
   HealthBarSlider: {fileID: 8668990419839141816}
 --- !u!136 &1778681749309576129
 CapsuleCollider:
@@ -579,6 +583,7 @@ MonoBehaviour:
   CurrentPlayingAnimation: 
   flipX: 0
   StartWithIdle: 1
+  canPlayAnimation: 1
 --- !u!1 &8982638957374703072
 GameObject:
   m_ObjectHideFlags: 0

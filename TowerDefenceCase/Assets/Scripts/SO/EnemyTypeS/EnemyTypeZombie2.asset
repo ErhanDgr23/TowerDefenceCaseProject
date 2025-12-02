@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: EnemyTypeZombie2
   m_EditorClassIdentifier: 
   EnemySprite: {fileID: 613658156, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
+  XpPrefab: {fileID: 7214384289727672897, guid: 91a1765b79603d443b391476432d3c51, type: 3}
   RunAnimationSprites:
   - name: Run
     frames:
@@ -52,3 +53,4 @@ MonoBehaviour:
   Health: 200
   Speed: 1.75
   Damage: 15
+  Xp: 10

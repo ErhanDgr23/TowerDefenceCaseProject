@@ -11,6 +11,7 @@ public class GunController : MonoBehaviour {
     [SerializeField] EnemySensor Sensor;
     [SerializeField] Transform GunPivot, BulletSpawnPoint;
 
+    CameraFollowFixedRotation _cameraFollow;
     SpriteRenderer _GunSprite;
     CustomAnimator _animator;
     Transform _enemyTarget;
@@ -21,6 +22,7 @@ public class GunController : MonoBehaviour {
         _GunSprite = GunPivot.GetChild(0).GetComponent<SpriteRenderer>();
         _animator = GetComponent<CustomAnimator>();
         GunPivot.GetChild(0).gameObject.SetActive(false);
+        _cameraFollow = CameraFollowFixedRotation.instance;
 
         Sensor.EnemyReach += CalculateClosestEnemyTarget;
     }
@@ -54,7 +56,7 @@ public class GunController : MonoBehaviour {
 
     private void LateUpdate()
     {
-        if(_enemyTarget == null)
+        if (_enemyTarget == null)
             GunPivot.eulerAngles = new Vector3(GunPivot.localEulerAngles.x, _animator.flipX == false ? 0f : 180f, 0f);
     }
 
@@ -79,6 +81,7 @@ public class GunController : MonoBehaviour {
         Vector3 localDir = GunPivot.parent.InverseTransformDirection(dir);
         float angle = Mathf.Atan2(localDir.y, localDir.x) * Mathf.Rad2Deg;
         GunPivot.localEulerAngles = new Vector3(0f, 0f, angle);
+        _cameraFollow.OffsetZChange(dir.normalized.z * 2.5f);
 
         if (angle >= -90f && angle <= 90f)
             _GunSprite.transform.localScale = new Vector2(1f, 1f);

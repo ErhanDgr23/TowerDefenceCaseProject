@@ -5,6 +5,7 @@ public class EnemyTypeSO : ScriptableObject
 {
     [Header("Animation And Graphics")]
     public Sprite EnemySprite;
+    public GameObject XpPrefab;
     public SpriteAnimation[] RunAnimationSprites;
 
     [Space(10)]
@@ -13,4 +14,5 @@ public class EnemyTypeSO : ScriptableObject
     public float Health;
     public float Speed;
     public int Damage;
+    public float Xp;
 }

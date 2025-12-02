@@ -5,11 +5,14 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - Obstacle
+  - Coin
+  - Exp
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Obstacle
   - Water
   - UI
   - 
